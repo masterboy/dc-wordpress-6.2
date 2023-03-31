@@ -1,4 +1,4 @@
-To make a fresh install of WordPress 6.2 with Nginx and MariaDB (MySQL-compliant) database, follow these steps:-
+To make a fresh installation of WordPress 6.2 with PHP-FPM, Nginx and MariaDB (MySQL-compliant) database, follow these steps:-
 
 ```
 git clone git@github.com:masterboy/dc-wordpress-6.2.git
