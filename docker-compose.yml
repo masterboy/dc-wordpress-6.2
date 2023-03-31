@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  wordpress:
+    restart: unless-stopped
+    image: wordpress:6.2.0-php8.2-fpm
+    container_name: wordpress
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - WORDPRESS_DB_HOST=${MYSQL_HOST:-mysql}
+      - WORDPRESS_DB_USER=${MYSQL_USER:-wordpress}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD:-password}
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE:-wordpress}
+      - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX:-wp_}
+    
+  nginx:
+    image: nginx:1.21.4
+    container_name: nginx
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+    ports:
+      - ${APP_EXTERNAL_PORT:-8001}:80
+    depends_on:
+      - wordpress
+
+  mariadb:
+    image: mariadb:10.6.5
+    container_name: mariadb
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+    ports:
+      - ${MYSQL_EXTERNAL_PORT:-3001}:3306
