@@ -10,6 +10,8 @@ Then copy then `.env.example` file to `.env`
 cp .env.example .env
 ```
 
+By default, the WordPress installation will be available on `http://localhost:8001` and the database will be available on `http://localhost:3001` once you perform docker compose up. You can modify the ports in the `.env` file.
+
 You may want to check the docker-compose.yml file and make some personal modifications.
 
 Finally,
